@@ -10,9 +10,13 @@
 			height: 720px;
 			border: medium solid #000000;
 		}
-		#canvas div {
+		#canvas .outer {
 			position: absolute;
 			border-style: solid;
+			display: table;
+		}
+		#canvas .inner {
+			display: table-cell;
 		}
 	</style>
 </head>
@@ -33,15 +37,23 @@ $(function() {
 		canvas.children().remove();
 		$.each(boxes, (_,b) => {
 			var d = $('<div>');
-			console.log(b);
+			d.addClass("outer");
 			d.css({
-				"width": b.w,
-				"height": b.h,
-				"left": b.x,
-				"top": b.y,
+				"width": b.w - b.b * 2,
+				"height": b.h - b.b * 2,
+				"left": b.x - b.b,
+				"top": b.y - b.b,
 				"border-width": b.b,
-				"border-color": b.c
+				"border-color": b.c,
+				"text-align": b.ha
 			});
+			var t = $('<div>');
+			t.text(b.text);
+			t.addClass("inner");
+			t.css({
+				"vertical-align": b.va
+			})
+			d.append(t);
 			canvas.append(d);
 		});
 	};
