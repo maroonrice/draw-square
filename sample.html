@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8"/>
+	<title>sample</title>
+	<style>
+		#canvas {
+			position: relative;
+			width: 1280px;
+			height: 720px;
+			border: medium solid #000000;
+		}
+		#canvas div {
+			position: absolute;
+			border-style: solid;
+		}
+	</style>
+</head>
+<body>
+<div id="form">
+	<input type="file" id="file"/>
+</div>
+<div id="canvas"></div>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+<script>
+$(function() {
+	const canvas = $('#canvas');
+	const repaint = (boxes) => {
+		canvas.children().remove();
+		$.each(boxes, (_,b) => {
+			var d = $('<div>');
+			console.log(b);
+			d.css({
+				"width": b.w,
+				"height": b.h,
+				"left": b.x,
+				"top": b.y,
+				"border-width": b.b,
+				"border-color": b.c
+			});
+			canvas.append(d);
+		});
+	};
+	const fileload = (file) => {
+		const reader = new FileReader();
+		reader.onload = () => {
+			repaint($.parseJSON(reader.result));
+		};
+		reader.readAsText(file);
+	};
+	$('#file').on("change", (e) => {
+		console.log(e.target.files.length);
+		const file = e.target.files[0];
+		fileload(file);
+	});
+});
+</script>
+</body>
+</html>
